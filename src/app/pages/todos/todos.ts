@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgClass, NgStyle } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-todos',
-  imports: [FormsModule],
+  imports: [FormsModule, NgStyle,NgClass],
   templateUrl: './todos.html',
   styleUrl: './todos.css',
 })
@@ -13,7 +14,7 @@ export class Todos {
   edit = false;
   defaultTodo = 'write a todo...';
   showForm: boolean = false;
-  editible: boolean = false;
+  editable: boolean = false;
   notify = signal<boolean>(false);
   todoIndex: number = -1;
   mytodo: string = '';
@@ -32,6 +33,11 @@ export class Todos {
 
   // Add Todo
   addTodo() {
+
+    if(!this.validateTodo()){
+      return;
+    }
+
     if (this.mytodo != '') {
       this.todos = [this.mytodo, ...this.todos];
     }
@@ -48,12 +54,12 @@ export class Todos {
   editTodo(todo: string, index: number) {
     this.mytodo = todo;
     this.showForm = true;
-    this.editible = true;
+    this.editable = true;
     this.todoIndex = index;
 
     console.log('todo : ', todo);
     console.log('myTodo : ', this.mytodo);
-    console.log('Editible : ', this.editible);
+    console.log('editable : ', this.editable);
   }
 
   // Change show form status : show/hide form
@@ -69,13 +75,17 @@ export class Todos {
   // Hide and Init Form
   initForm() {
     this.mytodo = '';
-    this.editible = false;
+    this.editable = false;
     this.todoIndex = -1;
     this.toggleForm();
   }
 
   // Update Todo
   updateTodo() {
+    if(!this.validateTodo()){
+      return;
+    }
+
     this.triggerNotify({
       message: 'Todo updated succefuly ',
       position: 'toast toast-bottom toast-end',
@@ -141,7 +151,19 @@ export class Todos {
   }
 
 
-
+// Validate Todo
+validateTodo(){
+  if(!this.mytodo){
+    this.triggerNotify({
+      message: 'Please check data a input, todo is required!',
+      position: 'toast toast-bottom toast-end',
+      alertClass: 'alert alert-warning',
+      duration: 3000
+    })
+    return false;
+  }
+  return true;
+}
 
 
 

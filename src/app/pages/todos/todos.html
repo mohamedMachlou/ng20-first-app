@@ -1,12 +1,10 @@
 @if(notify()) {
-  <div [class]="notification.position">
-    <div [class]="notification.alertClass">
-      <span> {{ notification.message }} </span>
-    </div>
+<div [class]="notification.position">
+  <div [class]="notification.alertClass">
+    <span> {{ notification.message }} </span>
   </div>
+</div>
 }
-
-
 
 <div
   style="
@@ -22,7 +20,18 @@
         excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a
         id nisi.
       </p>
-      <button (click)="toggleForm()" class="btn">
+      <button
+
+[ngStyle]=""
+
+        [ngClass]="{
+          'btn-primary': showForm && editable,
+          'btn-neutral': !showForm,
+          'btn-warning': editable
+        }"
+        (click)="toggleForm()"
+        class="btn"
+      >
         {{ changeToggleBtn() }}
       </button>
     </div>
@@ -43,7 +52,7 @@
     class="input"
   />
 
-  @if(editible){
+  @if(editable){
   <div class="flex gap-4">
     <button (click)="updateTodo()" class="btn btn-warning w-56">Update</button>
     <button (click)="initForm()" class="btn btn-neural">Cancel</button>
@@ -64,7 +73,7 @@
         <button (click)="editTodo(todo, i)" class="btn btn-sm btn-warning">
           Edit
         </button>
-        @if(!editible){
+        @if(!editable){
         <button (click)="deleteTodo(i)" class="btn btn-sm btn-error">
           Delete
         </button>
