@@ -1,0 +1,79 @@
+@if(notify()) {
+  <div [class]="notification.position">
+    <div [class]="notification.alertClass">
+      <span> {{ notification.message }} </span>
+    </div>
+  </div>
+}
+
+
+
+<div
+  style="
+    background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);
+  "
+>
+  <div class="hero-overlay"></div>
+  <div class="hero-content text-neutral-content text-center">
+    <div class="max-w-md">
+      <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
+      <p class="mb-5">
+        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+        excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a
+        id nisi.
+      </p>
+      <button (click)="toggleForm()" class="btn">
+        {{ changeToggleBtn() }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-between mt-14 mx-60">
+  <h1 class="Text-3xl font-bold">{{ title }}</h1>
+</div>
+
+<div class="flex flex-col gap-4 items-center mt-10">
+  {{ mytodo }}
+  @if(showForm) {
+  <input
+    [(ngModel)]="mytodo"
+    type="text"
+    [placeholder]="defaultTodo"
+    class="input"
+  />
+
+  @if(editible){
+  <div class="flex gap-4">
+    <button (click)="updateTodo()" class="btn btn-warning w-56">Update</button>
+    <button (click)="initForm()" class="btn btn-neural">Cancel</button>
+  </div>
+  } @else {
+  <button (click)="addTodo()" class="btn btn-primary w-80">Create</button>
+  } } @else {
+  <p>Click the show button above</p>
+  }
+
+  <ul class="menu bg-base-200 rounded-box w-80">
+    @for( todo of todos; track i; let i = $index; let e = $even; let o = $odd;
+    let f = $first; let l = $last) {
+    <!-- todo of todos; track i; let i = $index; let e = $even; let o = $odd; let f = $first; let l = $last -->
+    <li>
+      <span>{{ todo }}</span>
+      <div class="justify-end">
+        <button (click)="editTodo(todo, i)" class="btn btn-sm btn-warning">
+          Edit
+        </button>
+        @if(!editible){
+        <button (click)="deleteTodo(i)" class="btn btn-sm btn-error">
+          Delete
+        </button>
+        }
+      </div>
+    </li>
+
+    } @empty {
+    <li>Not todos yet...</li>
+    }
+  </ul>
+</div>
